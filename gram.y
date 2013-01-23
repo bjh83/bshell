@@ -12,7 +12,7 @@ void concat(YYSTYPE list, YYSTYPE word);
 	char *str;
 }
 
-%token WORD
+%token<YYLVAL> WORD
 
 %%
 
