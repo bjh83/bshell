@@ -1,6 +1,7 @@
 %{
 #include<stdio.h>
 #include<string.h>
+#include"change_dir.h"
 #include"list.h"
 int yylex();
 void yyerror(char *string);
@@ -14,7 +15,9 @@ extern int execute(list_t* args);
 	struct linked_list* list;
 }
 
-%token<str> WORD
+%token CD
+
+%token<str> PATH
 
 %type<str> command
 
@@ -23,18 +26,15 @@ extern int execute(list_t* args);
 %%
 
 stream:
-	  stream stmt '\n' { execute($2); printf("bshell>"); }
+	  stream stmt '\n' { if($2 != NULL) { execute($2); } printf("bshell:%s:>", current_dir); }
 	  |
 	  ;
 
 stmt:
-	command args { $$ = push(&$2, $1); }
+	WORD args { $$ = push(&$2, $1); }
+	| CD args { $$ = NULL; set_current_dir($2); }
 	|
 	;
-
-command:
-	   WORD { $$ = $1; }
-	   ;
 
 args:
 	args WORD { $$ = push(&$1, $2); }
