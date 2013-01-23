@@ -19,8 +19,6 @@ extern int execute(list_t* args);
 
 %token<str> PATH
 
-%type<str> command
-
 %type<list> stmt args
 
 %%
@@ -31,13 +29,13 @@ stream:
 	  ;
 
 stmt:
-	WORD args { $$ = push(&$2, $1); }
+	PATH args { $$ = push(&$2, $1); }
 	| CD args { $$ = NULL; set_current_dir($2); }
 	|
 	;
 
 args:
-	args WORD { $$ = push(&$1, $2); }
+	args PATH { $$ = push(&$1, $2); }
 	| { $$ = NULL; }
 	;
 
