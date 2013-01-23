@@ -24,5 +24,5 @@ lex.yy.c: lex.l
 .PHONY: clean
 
 clean:
-	rm -rf $(OBJS) $(PACKAGE) gram.tab.c lex.c
+	rm -rf $(OBJS) $(PACKAGE) gram.tab.c gram.tab.h lex.yy.c
 
