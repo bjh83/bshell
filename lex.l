@@ -5,7 +5,7 @@ YYSTYPE yylval;
 %}
 
 %%
-[a-zA-Z_]+ { yylval.str = strdup(yytext); return WORD;}
+[a-zA-Z_/.]+ { yylval.str = strdup(yytext); return WORD;}
 
 " " {;} /*Do nothing*/
 

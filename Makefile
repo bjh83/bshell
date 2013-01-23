@@ -1,5 +1,5 @@
 PACKAGE= bshell
-OBJS= main.o execute.o gram.tab.o lex.yy.o
+OBJS= main.o execute.o gram.tab.o lex.yy.o list.o
 CC= gcc
 
 .PHONY: all

@@ -1,21 +1,24 @@
 %{
 #include<stdio.h>
 #include<string.h>
+#include"list.h"
 int yylex();
 void yyerror(char *string);
-extern int execute(char* value);
-void concat(char* list, char* word);
+extern int execute(list_t* args);
 %}
 
 %start stream
 
 %union {
-	char *str;
+	char* str;
+	struct linked_list* list;
 }
 
 %token<str> WORD
 
-%type<str> stream stmt
+%type<str> command
+
+%type<list> stmt args
 
 %%
 
@@ -25,7 +28,16 @@ stream:
 	  ;
 
 stmt:
-	stmt WORD { concat($$, $2); }
+	command args { $$ = push(&$2, $1); }
+	|
+	;
+
+command:
+	   WORD { $$ = $1; }
+	   ;
+
+args:
+	args WORD { $$ = push(&$1, $2); }
 	| { $$ = NULL; }
 	;
 
@@ -33,15 +45,5 @@ stmt:
 
 void yyerror(char *err_string) {
 	printf("%s\n", err_string);
-}
-
-void concat(char* list, char* word) {
-	if(list != NULL) {
-		char* space = " ";
-		list = strcat(list, space);
-	} else {
-		list = malloc(256);
-	}
-	list = strcat(list, word);
 }
 
