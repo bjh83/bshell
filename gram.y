@@ -23,7 +23,7 @@ extern int execute(list_t* args);
 %%
 
 stream:
-	  stream stmt '\n' { execute($2); }
+	  stream stmt '\n' { execute($2); printf("bshell>"); }
 	  |
 	  ;
 

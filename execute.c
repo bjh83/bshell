@@ -10,13 +10,14 @@
 typedef int bool;
 
 int execute(list_t* list) {
-	printf("Execution begining\n");
-	char* command = pop(&list);
+	char* command = list->value;
 	char** argv = malloc(len(list) * sizeof(char*));
 	int index = 0;
 	pid_t cpid;
 	while(list != NULL) {
-		argv[index++] = pop(&list);
+		char* value = pop(&list);
+		argv[index++] = value;
+		printf("%s\n", value);
 	}
 
 	cpid = fork();
