@@ -1,3 +1,4 @@
+#include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
 
@@ -6,13 +7,13 @@
 
 typedef int bool;
 
-int prog_call(char* prog_name, char* argv) {
+int call_prog(char* prog_name, char* argv) {
 	pid_t cpid;
 
 	cpid = fork();
 
 	if(cpid == 0) { //True if is child process
-		execl(prog_name, argv);
+		execl(prog_name, argv, (char*)NULL);
 	} else {
 		wait();
 	}
@@ -32,7 +33,7 @@ int execute(char* instruct) {
 			index = 0;
 		}
 	}
-	argc = malloc(strlen(next_instruct));
+	argv = malloc(strlen(next_instruct));
 	strcpy(argv, next_instruct);
 	int ret_val = call_prog(prog_name, argv);
 	free(instruct);

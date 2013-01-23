@@ -1,5 +1,5 @@
 PACKAGE= bshell
-OBJS= main.o execute.o y.tab.o lex.o
+OBJS= main.o execute.o gram.tab.o lex.yy.o
 CC= gcc
 
 .PHONY: all
@@ -12,16 +12,14 @@ $(PACKAGE): $(OBJS)
 main.o: gram.tab.h
 
 gram.tab.o: gram.tab.c
-	$(CC) -c gram.tab.c
 
 gram.tab.c gram.tab.h: gram.y
-	bison gram.y
+	bison -d gram.y
 
-lex.o: lex.c
-	$(CC) -c lex.c
+lex.yy.o: lex.yy.c
 
-lex.c: lex.l
-	$(CC) flex lex.l
+lex.yy.c: lex.l
+	flex lex.l
 
 .PHONY: clean
 

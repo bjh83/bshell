@@ -1,9 +1,10 @@
 %{
+#include<stdio.h>
 #include<string.h>
 int yylex();
 void yyerror(char *string);
 extern int execute(char* value);
-void concat(YYSTYPE list, YYSTYPE word);
+void concat(char* list, char* word);
 %}
 
 %start stream
@@ -12,18 +13,20 @@ void concat(YYSTYPE list, YYSTYPE word);
 	char *str;
 }
 
-%token<YYLVAL> WORD
+%token<str> WORD
+
+%type<str> stream stmt
 
 %%
 
 stream:
-	  stream stmt '\n' { execute($2.str); }
+	  stream stmt '\n' { execute($2); }
 	  |
 	  ;
 
 stmt:
 	stmt WORD { concat($$, $2); }
-	| { $$.str = NULL; }
+	| { $$ = NULL; }
 	;
 
 %%
@@ -32,11 +35,13 @@ void yyerror(char *err_string) {
 	printf("%s\n", err_string);
 }
 
-void concat(YYSTYPE list, YYSTYPE word) {
-	if(list.str != NULL) {
+void concat(char* list, char* word) {
+	if(list != NULL) {
 		char* space = " ";
-		list.str = strcat(list.str, space);
+		list = strcat(list, space);
+	} else {
+		list = malloc(256);
 	}
-	list.str = strcat(list.str, word.str);
+	list = strcat(list, word);
 }
 

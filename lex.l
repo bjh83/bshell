@@ -5,7 +5,7 @@ YYSTYPE yylval;
 %}
 
 %%
-[a-zA-Z_]+ { yylval.str = strdup(yytext); return WORD}
+[a-zA-Z_]+ { yylval.str = strdup(yytext); return WORD;}
 
 " " {;} /*Do nothing*/
 
@@ -14,6 +14,6 @@ YYSTYPE yylval;
 %%
 
 #ifndef yywrap
-yywrap { return 1;}
+yywrap() { return 1; }
 #endif
 
