@@ -1,3 +1,4 @@
+#include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<dirent.h>
@@ -20,6 +21,7 @@ char* search(const char* dir_path, const char* search_name) {
 	while(num--) {
 		if(ret_val == NULL) {
 			ret_val = entry_list[num]->d_name;
+			printf("%s\n", ret_val);
 		} else {
 			free(entry_list[num]);
 		}

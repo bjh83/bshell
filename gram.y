@@ -24,13 +24,14 @@ extern int execute(list_t* args);
 %%
 
 stream:
-	  stream stmt '\n' { if($2 != NULL) { execute($2); } printf("bshell:%s:>", current_dir); }
+	  stream stmt '\n' { if($2 != NULL) { printf("Execute\n"); execute($2); } 
+							printf("bshell:%s:>", current_dir); }
 	  |
 	  ;
 
 stmt:
 	PATH args { $$ = push(&$2, $1); }
-	| CD args { $$ = NULL; set_current_dir($2); }
+	| CD args { $$ = NULL; char* val = pop(&$2); printf("Change dir: %s\n", val); set_current_dir(val); }
 	|
 	;
 
