@@ -16,6 +16,7 @@ extern int execute(list_t* args);
 }
 
 %token CD
+%token LOAD_BIN
 
 %token<str> PATH
 
@@ -30,7 +31,8 @@ stream:
 	  ;
 
 stmt:
-	PATH args { $$ = push(&$2, $1); }
+	PATH args { search_bins(&$1); $$ = push(&$2, $1); }
+	| LOAD_BIN args { set_up_bins($2); $$ = NULL; }
 	| CD args { $$ = NULL; char* val = pop(&$2); printf("Change dir: %s\n", val); set_current_dir(val); }
 	|
 	;

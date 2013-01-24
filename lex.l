@@ -12,10 +12,9 @@ PATH ({SLASH}{NAME}+)+
 
 %%
 "cd" { return CD; }
-{NAME}+{PATH}? { yylval.str = get_path(strdup(yytext));
-				printf("local: %s\n", yylval.str); return PATH; }
-{PATH} { yylval.str = strdup(yytext);
-		printf("abs: %s\n", yylval.str); return PATH; }
+"load-bins" { return LOAD_BIN; }
+{NAME}+{PATH}? { yylval.str = strdup(yytext); return PATH; }
+{PATH} { yylval.str = strdup(yytext); return PATH; }
 
 " " {;} /*Do nothing*/
 
