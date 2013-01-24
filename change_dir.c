@@ -4,6 +4,7 @@
 #include"list.h"
 
 extern char* search(const char* dir_path, const char* name);
+char* append_slash(char* word);
 
 char* current_dir;
 
@@ -16,8 +17,21 @@ void set_up_bins(list_t *list) {
 	bin_list = malloc(bin_list_size);
 	int index = 0;
 	while(list != NULL) {
-		bin_list[index++] = pop(&list);
+		bin_list[index++] = append_slash(pop(&list));
 	}
+}
+
+char* append_slash(char* word) {
+	int len = strlen(word);
+	if(word[len - 1] != '/') {
+		char* temp = malloc(len + 1);
+		char* slash = "/";
+		strcpy(temp, word);
+		strcpy(temp + len, slash);
+		free(word);
+		return temp;
+	}
+	return word;
 }
 
 void set_current_dir(char* new_dir) {
@@ -34,7 +48,7 @@ void set_current_dir(char* new_dir) {
 	current_dir = new_dir;
 }
 
-char* get_path(const char* name) {
+char* get_path(char* name) {
 	char* result = search(current_dir, name);
 	printf("%s\n", result);
 	if(result != NULL) {
