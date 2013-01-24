@@ -4,11 +4,6 @@
 #include<unistd.h>
 #include"list.h"
 
-#define false 0
-#define true 1
-
-typedef int bool;
-
 int execute(list_t* list) {
 	char* command = list->value;
 	char** argv = malloc(len(list) * sizeof(char*));
@@ -20,12 +15,20 @@ int execute(list_t* list) {
 		printf("%s\n", value);
 	}
 
-	printf("Command: %s\n", command);
 	cpid = fork();
-	if(cpid == 0) { //True if is child process
+	if(cpid == -1) {
+		printf("ERROR, fork failed!!!\n");
+	} else if(cpid == 0) { //True if is child process
+		printf("Child process begining\n");
 		execv(command, argv); //Execute command
 	} else {
+		int i;
+		for(i = 0; i < index; i++) {
+			free(argv[i]);
+		}
+		free(argv);
 		wait(); //Wait until child terminates
+		printf("Execution terminated\n");
 	}
 }
 
