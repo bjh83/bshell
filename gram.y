@@ -1,11 +1,13 @@
 %{
 #include<stdio.h>
+#include<stdlib.h>
 #include<string.h>
 #include"change_dir.h"
 #include"list.h"
 int yylex();
 void yyerror(char *string);
 extern int execute(list_t* args);
+char* get_dot();
 %}
 
 %start stream
@@ -31,9 +33,10 @@ stream:
 	  ;
 
 stmt:
-	PATH args { search_bins(&$1); $$ = push(&$2, $1); }
+	PATH args { search_bins(&$1); if($2 == NULL) {
+				$2 = push(&$2, strdup(current_dir)); } $$ = push(&$2, $1); }
 	| LOAD_BIN args { set_up_bins($2); $$ = NULL; }
-	| CD args { $$ = NULL; char* val = pop(&$2); printf("Change dir: %s\n", val); set_current_dir(val); }
+	| CD args { $$ = NULL; set_current_dir(pop(&$2)); }
 	|
 	;
 

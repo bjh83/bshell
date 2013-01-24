@@ -6,7 +6,7 @@
 YYSTYPE yylval;
 %}
 
-NAME [a-zA-Z_.\-+]
+NAME [a-zA-Z_.\-+0-9]
 SLASH [/]
 PATH ({SLASH}{NAME}+)+
 

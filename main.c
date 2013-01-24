@@ -5,7 +5,7 @@
 #include"gram.tab.h"
 
 int main() {
-	char* home = "/home/brendan";
+	char* home = "/home/brendan/";
 	current_dir = malloc(strlen(home) + 1);
 	strcpy(current_dir, home);
 	printf("bshell:%s:>", current_dir);

@@ -35,8 +35,18 @@ char* append_slash(char* word) {
 }
 
 void set_current_dir(char* new_dir) {
-	free(current_dir);
-	current_dir = append_slash(new_dir);
+	if(strlen(new_dir) >= 2 && new_dir[0] == '.' && new_dir[1] == '.') {
+		int len = strlen(current_dir);
+		if(len > 1) {
+			current_dir[--len] = '\0';
+			for(len--; current_dir[len] != '/'; len--) {
+				current_dir[len] = '\0';
+			}
+		}
+	} else {
+		free(current_dir);
+		current_dir = append_slash(new_dir);
+	}
 }
 
 int search_bins(char** name) {
@@ -56,6 +66,9 @@ int search_bins(char** name) {
 }
 
 int search_current_dir(char** name) {
+	if(strlen(*name) >= 2 && (*name)[0] == '.' && (*name)[1] == '.') {
+		return 0;
+	}
 	if(search(current_dir, *name)) {
 		int current_len = strlen(current_dir);
 		char* temp = malloc(strlen(*name) + current_len + 1);
