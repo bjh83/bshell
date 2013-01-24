@@ -1,0 +1,9 @@
+#ignore object files
+.o
+#ignore compiled lex files
+.yy.c
+#ignore compile yacc files
+.tab.h .tab.c
+#ignore the binary
+bshell
+
