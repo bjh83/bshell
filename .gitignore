@@ -1,9 +1,11 @@
 #ignore object files
-.o
+*.o
 #ignore compiled lex files
-.yy.c
+*.yy.c
 #ignore compile yacc files
-.tab.h .tab.c
+*.tab.h
+
+*.tab.c
 #ignore the binary
 bshell
 
