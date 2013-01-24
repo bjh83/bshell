@@ -20,6 +20,7 @@ int execute(list_t* list) {
 		printf("%s\n", value);
 	}
 
+	printf("Command: %s\n", command);
 	cpid = fork();
 	if(cpid == 0) { //True if is child process
 		execv(command, argv); //Execute command
