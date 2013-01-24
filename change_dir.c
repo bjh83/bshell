@@ -16,7 +16,7 @@ void set_current_dir(char* new_dir) {
 		free(new_dir);
 		new_dir = temp;
 	}
-	//free(current_dir);
+	free(current_dir);
 	current_dir = new_dir;
 }
 
@@ -28,11 +28,11 @@ char* get_path(const char* name) {
 		strcpy(ret_val, current_dir);
 		strcpy(ret_val + strlen(current_dir), name);
 		printf("%s\n", ret_val);
-		//free(result);
-		//printf("free succeeded\n");
+		free(result);
+		printf("free succeeded\n");
 		return ret_val;
 	}
-	//free(result);
+	free(result);
 	return name;
 }
 

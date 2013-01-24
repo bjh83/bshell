@@ -20,11 +20,10 @@ char* search(const char* dir_path, const char* search_name) {
 	int num = scandir(dir_path, &entry_list, &filter, alphasort);
 	while(num--) {
 		if(ret_val == NULL) {
-			ret_val = entry_list[num]->d_name;
+			ret_val = strdup(entry_list[num]->d_name);
 			printf("%s\n", ret_val);
-		} else {
-			free(entry_list[num]);
 		}
+		free(entry_list[num]);
 	}
 	free(entry_list);
 	return ret_val;
