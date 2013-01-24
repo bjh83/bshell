@@ -13,19 +13,18 @@ int filter(const struct dirent* entry) {
 	}
 }
 
-char* search(const char* dir_path, const char* search_name) {
+int search(const char* dir_path, char* search_name) {
 	search_term = search_name;
-	char* ret_val = NULL;
+	int found = 0;
 	struct dirent** entry_list;
 	int num = scandir(dir_path, &entry_list, &filter, alphasort);
+	if(num > 0) {
+		found = 1;
+	}
 	while(num--) {
-		if(ret_val == NULL) {
-			ret_val = strdup(entry_list[num]->d_name);
-			printf("%s\n", ret_val);
-		}
 		free(entry_list[num]);
 	}
 	free(entry_list);
-	return ret_val;
+	return found;
 }
 

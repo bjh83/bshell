@@ -38,7 +38,7 @@ stmt:
 	;
 
 args:
-	args PATH { $$ = push(&$1, $2); }
+	args PATH { search_current_dir(&$2); $$ = push(&$1, $2); }
 	| { $$ = NULL; }
 	;
 
