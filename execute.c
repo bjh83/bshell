@@ -6,7 +6,7 @@
 
 int execute(list_t* list) {
 	char* command = list->value;
-	char** argv = malloc(len(list) * sizeof(char*));
+	char** argv = malloc((len(list) + 1) * sizeof(char*));
 	int index = 0;
 	pid_t cpid;
 	while(list != NULL) {
@@ -14,6 +14,7 @@ int execute(list_t* list) {
 		argv[index++] = value;
 		printf("%s\n", value);
 	}
+	argv[index++] = NULL;
 
 	cpid = fork();
 	if(cpid == -1) {
@@ -23,7 +24,7 @@ int execute(list_t* list) {
 		execv(command, argv); //Execute command
 	} else {
 		int i;
-		for(i = 0; i < index; i++) {
+		for(i = 0; i < index - 1; i++) {
 			free(argv[i]);
 		}
 		free(argv);

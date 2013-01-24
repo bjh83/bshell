@@ -15,6 +15,7 @@ PATH ({SLASH}{NAME}+)+
 "load-bins" { return LOAD_BIN; }
 {NAME}+{PATH}? { yylval.str = strdup(yytext); return PATH; }
 {PATH} { yylval.str = strdup(yytext); return PATH; }
+"/" { yylval.str = strdup(yytext); return PATH; }
 
 " " {;} /*Do nothing*/
 
