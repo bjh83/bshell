@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<unistd.h>
 #include"change_dir.h"
 #include"list.h"
 int yylex();
@@ -27,21 +28,32 @@ char* get_dot();
 %%
 
 stream:
-	  stream stmt '\n' { if($2 != NULL) { printf("Execute\n"); execute($2); } 
-							printf("bshell:%s:>", current_dir); }
+	  stream stmt '\n' { 	
+							if($2 != NULL) { 
+								printf("Execute\n");
+								execute($2); 
+							} 
+							char* current_dir = (char*)get_current_dir_name();
+							printf("bshell:%s:>", current_dir); 
+							free(current_dir);
+						}
 	  |
 	  ;
 
 stmt:
-	PATH args { search_bins(&$1); if($2 == NULL) {
-				$2 = push(&$2, strdup(current_dir)); } $$ = push(&$2, $1); }
+	PATH args { search_bins(&$1); $$ = push(&$2, $1); }
 	| LOAD_BIN args { set_up_bins($2); $$ = NULL; }
-	| CD args { $$ = NULL; set_current_dir(pop(&$2)); }
+	| CD args { 
+				$$ = NULL;
+				char* current_dir = pop(&$2);
+				chdir(current_dir);
+				free(current_dir); 
+			  }
 	|
 	;
 
 args:
-	args PATH { search_current_dir(&$2); $$ = push(&$1, $2); }
+	args PATH { $$ = push(&$1, $2); }
 	| { $$ = NULL; }
 	;
 
