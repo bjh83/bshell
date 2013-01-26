@@ -5,8 +5,8 @@
 #include"list.h"
 
 int execute(list_t* list) {
-	char* command = pop(&list);
 	int length = len(list) + 1;
+	char* command = pop(&list);
 	char** argv = malloc(length * sizeof(char*));
 	int index = length - 1;
 	pid_t cpid;
@@ -14,10 +14,8 @@ int execute(list_t* list) {
 	while(list != NULL) {
 		char* value = pop(&list);
 		argv[index--] = value;
-		printf("%s\n", value);
 	}
 	argv[index] = command;
-
 	cpid = fork();
 	if(cpid == -1) {
 		printf("ERROR, fork failed!!!\n");
@@ -31,7 +29,7 @@ int execute(list_t* list) {
 		}
 		free(argv);
 		wait(); //Wait until child terminates
-		printf("Execution terminated\n");
 	}
+	return 1;
 }
 
