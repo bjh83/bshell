@@ -5,16 +5,18 @@
 #include"list.h"
 
 int execute(list_t* list) {
-	char* command = list->value;
-	char** argv = malloc((len(list) + 1) * sizeof(char*));
-	int index = 0;
+	char* command = pop(&list);
+	int length = len(list) + 1;
+	char** argv = malloc(length * sizeof(char*));
+	int index = length - 1;
 	pid_t cpid;
+	argv[index--] = NULL;
 	while(list != NULL) {
 		char* value = pop(&list);
-		argv[index++] = value;
+		argv[index--] = value;
 		printf("%s\n", value);
 	}
-	argv[index++] = NULL;
+	argv[index] = command;
 
 	cpid = fork();
 	if(cpid == -1) {
@@ -24,7 +26,7 @@ int execute(list_t* list) {
 		execv(command, argv); //Execute command
 	} else {
 		int i;
-		for(i = 0; i < index - 1; i++) {
+		for(i = 0; i < length - 1; i++) {
 			free(argv[i]);
 		}
 		free(argv);
